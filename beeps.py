@@ -6,6 +6,11 @@ sample_rate = 44100
 dot_duration = 0.1
 
 def beep(type):
+    
+    if type == "WAIT":
+        time.sleep(dot_duration * 7)
+        return
+    
     duration = dot_duration if type == "dot" else dot_duration * 3
     
     # Generate numpy array for time duration

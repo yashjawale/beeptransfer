@@ -7,6 +7,9 @@ def main():
     beep("dot")
     beep("dot")
     beep("dash")
+    beep("WAIT")
+    beep("dot")
+    beep("dash")
 
 
 if __name__ == "__main__":
