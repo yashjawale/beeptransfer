@@ -26,3 +26,15 @@ def beep(type):
     
     # Silence for one dot duration
     time.sleep(dot_duration)
+
+
+def beep_morse(morse):
+    for code in morse:
+        if code == "WAIT":
+            beep("WAIT")
+        else:
+            for char in code:
+                if char == ".":
+                    beep("dot")
+                elif char == "-":
+                    beep("dash")

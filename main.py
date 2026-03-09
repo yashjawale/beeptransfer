@@ -1,12 +1,10 @@
 from morse import convert_text_to_morse, convert_morse_to_char
-from beeps import beep
+from beeps import beep_morse
 
 def main():
-    print(convert_text_to_morse("hello world"))
     
-    morse = convert_text_to_morse("hello world")
-    for code in morse:
-        print(convert_morse_to_char(code), end="")
+    morse = convert_text_to_morse("This is Cs50")
+    beep_morse(morse)
 
 
 if __name__ == "__main__":
