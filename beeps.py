@@ -32,6 +32,7 @@ def beep(type):
 
 
 def beep_morse(morse):
+    print(morse)
     for code in morse:
         if code == "WAIT":
             beep("WAIT")
