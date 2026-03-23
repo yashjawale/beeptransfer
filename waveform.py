@@ -1,7 +1,7 @@
 import numpy as np
 import sounddevice as sd
 
-from morse import convert_morse_to_char, morse_to_alpha
+from morse import convert_morse_to_char
 
 FS = 44100
 UNIT = 0.1
@@ -25,24 +25,19 @@ def audio_callback(indata, frames, time, status):
     # Compare to threshold
     if volume_norm > THRESHOLD:
         # Detection
-        # print(low, end=" ", flush=True)
-        # print("█", end="", flush=True)
 
         if not flag:
             flag = True
 
         # word complete
         if 47 <= low <= 55:
-            # print("END", end=" ", flush=True)
-            print(convert_morse_to_char(letter))
+            print(convert_morse_to_char(letter), end="", flush=True)
             letter=""
             print(" ", end="", flush=True)
 
         # letter complete
         if 16 <= low <= 22:
-            # print("END", end=" ", flush=True)
-            # print(letter, end=" ", flush=True)
-            print(convert_morse_to_char(letter))
+            print(convert_morse_to_char(letter), end="", flush=True)
             letter = ""
 
         high += 1
@@ -50,18 +45,15 @@ def audio_callback(indata, frames, time, status):
 
     else:
         # Silence
-        # print(".", end="", flush=True)
 
         if flag:
             # register dash
             if 12 <= high <= 13:
                 letter += "-"
-                # print("DASH", end=" ", flush=True)
 
             # register dot
             if 3 <= high <= 5:
                 letter += "."
-                # print("DOT", end=" ", flush=True)
 
             low += 1
             high = 0
@@ -70,7 +62,7 @@ def audio_callback(indata, frames, time, status):
         print("COMPLETE")
 
 
-def main():
+def listen():
     # Start listening
     with sd.InputStream(
         callback=audio_callback, channels=1, samplerate=FS, blocksize=1024
@@ -79,7 +71,3 @@ def main():
         while True:
             # print(flag, high, low, letter, message)
             sd.sleep(1000)
-
-
-if __name__ == "__main__":
-    main()

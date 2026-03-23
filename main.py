@@ -1,4 +1,5 @@
-from morse import convert_text_to_morse, convert_morse_to_char
+from morse import convert_text_to_morse
+from waveform import listen
 from beeps import beep_morse
 from rich.prompt import Prompt
 
@@ -14,6 +15,9 @@ def main():
         morse.append("...---...")
         
         beep_morse(morse)
+    
+    if choice == "listen":
+        listen()
 
 
 if __name__ == "__main__":
