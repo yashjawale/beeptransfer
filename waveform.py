@@ -1,6 +1,8 @@
 import numpy as np
 import sounddevice as sd
 
+from morse import convert_morse_to_char, morse_to_alpha
+
 FS = 44100
 UNIT = 0.1
 THRESHOLD = 0.03
@@ -32,14 +34,15 @@ def audio_callback(indata, frames, time, status):
         # word complete
         if 47 <= low <= 55:
             # print("END", end=" ", flush=True)
-            print(letter)
+            print(convert_morse_to_char(letter))
             letter=""
-            print("WAIT", flush=True)
+            print(" ", end="", flush=True)
 
         # letter complete
         if 16 <= low <= 22:
             # print("END", end=" ", flush=True)
-            print(letter)
+            # print(letter, end=" ", flush=True)
+            print(convert_morse_to_char(letter))
             letter = ""
 
         high += 1
@@ -53,15 +56,18 @@ def audio_callback(indata, frames, time, status):
             # register dash
             if 12 <= high <= 13:
                 letter += "-"
-                print("DASH", end=" ", flush=True)
+                # print("DASH", end=" ", flush=True)
 
             # register dot
             if 3 <= high <= 5:
                 letter += "."
-                print("DOT", end=" ", flush=True)
+                # print("DOT", end=" ", flush=True)
 
             low += 1
             high = 0
+    
+    if letter == "...---...":
+        print("COMPLETE")
 
 
 def main():

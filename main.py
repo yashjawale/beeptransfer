@@ -10,6 +10,9 @@ def main():
         print("Beeping message...")
         morse = convert_text_to_morse(text)
         
+        # append end signal
+        morse.append("...---...")
+        
         beep_morse(morse)
 
 
