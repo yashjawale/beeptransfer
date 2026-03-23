@@ -10,7 +10,6 @@ high = 0
 low = 0
 
 letter = ""
-message = []
 
 flag = False
 
@@ -24,20 +23,23 @@ def audio_callback(indata, frames, time, status):
     # Compare to threshold
     if volume_norm > THRESHOLD:
         # Detection
+        # print(low, end=" ", flush=True)
         # print("█", end="", flush=True)
 
         if not flag:
             flag = True
 
         # word complete
-        if 47 <= low <= 49:
-            print("WAIT", end=" ", flush=True)
+        if 47 <= low <= 55:
+            # print("END", end=" ", flush=True)
+            print(letter)
+            letter=""
+            print("WAIT", flush=True)
 
         # letter complete
-        if 18 <= low <= 19:
-            print("END", end=" ", flush=True)
-            # print(letter)
-            message.append(letter)
+        if 16 <= low <= 22:
+            # print("END", end=" ", flush=True)
+            print(letter)
             letter = ""
 
         high += 1
