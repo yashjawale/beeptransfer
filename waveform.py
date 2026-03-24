@@ -2,7 +2,7 @@ import numpy as np
 import sounddevice as sd
 import sys
 
-from morse import convert_morse_to_char
+from project import convert_morse_to_char
 
 FS = 44100
 UNIT = 0.1
