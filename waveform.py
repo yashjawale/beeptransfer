@@ -8,32 +8,34 @@ FS = 44100
 UNIT = 0.1
 THRESHOLD = 0.03
 
-# keep track of high & low
+# keep track of high/low count & formed letter
 high = 0
 low = 0
-
 letter = ""
 
-flag = False
+is_detecting = False
 
 
 def audio_callback(indata, frames, time, status):
     # RMS of whole chunk
     volume_norm = np.linalg.norm(indata) / np.sqrt(len(indata))
 
-    global high, low, letter, message, flag
+    global high, low, letter, message, is_detecting
 
     # Compare to threshold
     if volume_norm > THRESHOLD:
         # Detection
 
-        if not flag:
-            flag = True
+        # begin detection after first high signal
+        if not is_detecting:
+            is_detecting = True
 
         # word complete
         if 47 <= low <= 55:
             print(convert_morse_to_char(letter), end="", flush=True)
             letter=""
+            
+            # space after each word
             print(" ", end="", flush=True)
 
         # letter complete
@@ -47,7 +49,7 @@ def audio_callback(indata, frames, time, status):
     else:
         # Silence
 
-        if flag:
+        if is_detecting:
             # register dash
             if 12 <= high <= 13:
                 letter += "-"
@@ -72,5 +74,4 @@ def listen():
     ):
         print("Listening...")
         while True:
-            # print(flag, high, low, letter, message)
             sd.sleep(1000)

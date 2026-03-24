@@ -1,4 +1,4 @@
-from morse import alpha_to_morse, morse_to_alpha
+from morse import ALPHA_TO_MORSE, MORSE_TO_ALPHA
 from waveform import listen
 from rich.prompt import Prompt
 import time
@@ -10,21 +10,24 @@ sample_rate = 44100
 dot_duration = 0.1
 
 
+# convert text to morse code
 def convert_text_to_morse(text):
     converted = []
     for char in text.lower():
-        if char in alpha_to_morse:
-            converted.append(alpha_to_morse[char])
+        if char in ALPHA_TO_MORSE:
+            converted.append(ALPHA_TO_MORSE[char])
     
     return converted
 
 
+# convert morse code to its corresponding character
 def convert_morse_to_char(morse):
-    if morse in morse_to_alpha:
-        return morse_to_alpha[morse]
+    if morse in MORSE_TO_ALPHA:
+        return MORSE_TO_ALPHA[morse]
     return ""
 
 
+# sends out a beep to speakers depending on whether WAIT/dot/dash
 def beep(type):
 
     # After each word is complete
@@ -48,6 +51,8 @@ def beep(type):
     # Silence for one dot duration
     time.sleep(dot_duration)
 
+
+# beeps out morse code based on input
 def beep_morse(morse):
     for code in morse:
         if code == "WAIT":
@@ -64,6 +69,8 @@ def beep_morse(morse):
 
 
 def main():
+    
+    # Prompt user to program modes
     choice = Prompt.ask("Choose mode of program", choices=["send", "listen"], default="send")
     
     if choice == "send":

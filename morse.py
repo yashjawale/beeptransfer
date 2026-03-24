@@ -1,4 +1,5 @@
-alpha_to_morse = {
+# mapping from alphabets to morse code
+ALPHA_TO_MORSE = {
     "a": ".-",
     "b": "-...",
     "c": "-.-.",
@@ -38,4 +39,5 @@ alpha_to_morse = {
     " ": "WAIT"
 }
 
-morse_to_alpha = {value: key for key, value in alpha_to_morse.items()}
+# mapping from alphabets to morse code
+MORSE_TO_ALPHA = {value: key for key, value in ALPHA_TO_MORSE.items()}
