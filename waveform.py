@@ -1,5 +1,6 @@
 import numpy as np
 import sounddevice as sd
+import sys
 
 from morse import convert_morse_to_char
 
@@ -59,7 +60,9 @@ def audio_callback(indata, frames, time, status):
             high = 0
     
     if letter == "...---...":
+        print("----------------")
         print("COMPLETE")
+        sys.exit()
 
 
 def listen():
