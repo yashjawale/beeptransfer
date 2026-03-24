@@ -1,4 +1,5 @@
 from rich.prompt import Prompt
+from rich.progress import track
 import time
 import numpy as np
 import sounddevice as sd
@@ -66,7 +67,7 @@ def beep(type):
 
 # beeps out morse code based on input
 def beep_morse(morse):
-    for code in morse:
+    for code in track(morse, description="Sending message..."):
         if code == "WAIT":
             beep("WAIT")
         else:
@@ -178,7 +179,7 @@ def main():
     
     if mode == "send":
         text = message or Prompt.ask("Enter your message")
-        print("Beeping message...")
+        print("Encoding message...")
         morse = convert_text_to_morse(text)
         
         # append end signal
