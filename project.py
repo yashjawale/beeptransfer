@@ -131,7 +131,7 @@ def audio_callback(indata, frames, time, status):
     if letter == "...---...":
         print("----------------")
         print("COMPLETE")
-        sys.exit()
+        raise sd.CallbackStop()
 
 
 # triggeres sounddevice listening
@@ -139,9 +139,9 @@ def listen():
     # Start listening
     with sd.InputStream(
         callback=audio_callback, channels=1, samplerate=FS, blocksize=1024
-    ):
+    ) as stream:
         print("Listening...")
-        while True:
+        while stream.active:
             sd.sleep(1000)
 
 
