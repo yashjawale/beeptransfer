@@ -3,6 +3,7 @@ import time
 import numpy as np
 import sounddevice as sd
 import sys
+import re
 
 from morse import ALPHA_TO_MORSE, MORSE_TO_ALPHA
 
@@ -12,7 +13,7 @@ DOT_DURATION = 0.1
 FS = 44100
 UNIT = 0.1
 THRESHOLD = 0.03
-
+END_SIGNAL = "...---..."
 
 # keep track of high/low count & formed letter
 high = 0
@@ -143,26 +144,49 @@ def listen():
             sd.sleep(1000)
 
 
+# filters message with only alphabets & numbers
+def filter_message(message):
+    return re.sub(r"[^a-zA-Z0-9 ]", "", message).lower()
+
+
 # entry point of program
 def main():
     
-    # print(sys.argv)
-        
-    # Prompt user to program modes
-    choice = Prompt.ask("Choose mode of program", choices=["send", "listen"], default="send")
+    arg_length = len(sys.argv)
+    
+    mode = ""
+    message = ""
+    
+    # if --listen supplied
+    if arg_length == 2 and sys.argv[1] == "--listen":
+        mode = "listen"
+    
+    # if --send supplied
+    if arg_length == 3 and sys.argv[1] == "--send":
+        mode = "send"
+        message = filter_message(sys.argv[2])
+    
+    if arg_length > 1 and not (mode == "listen" or (mode == "send" and message)):
+        print("Invalid arguments")
+        sys.exit(1)
     
     
-    if choice == "send":
-        text = Prompt.ask("Enter your message")
+    # Prompt user to program modes if flag not provided
+    if arg_length == 1:
+        mode = Prompt.ask("Choose mode of program", choices=["send", "listen"], default="send")
+    
+    
+    if mode == "send":
+        text = message or Prompt.ask("Enter your message")
         print("Beeping message...")
         morse = convert_text_to_morse(text)
         
         # append end signal
-        morse.append("...---...")
+        morse.append(END_SIGNAL)
         
         beep_morse(morse)
     
-    if choice == "listen":
+    if mode == "listen":
         listen()
 
 
