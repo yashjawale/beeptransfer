@@ -129,7 +129,7 @@ def audio_callback(indata, frames, time, status):
             high = 0
     
     if letter == "...---...":
-        print("----------------")
+        print("\n----------------")
         print("COMPLETE")
         raise sd.CallbackStop()
 
