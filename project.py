@@ -2,9 +2,15 @@ from rich.prompt import Prompt
 from rich.progress import track
 import time
 import numpy as np
-import sounddevice as sd
 import sys
 import re
+
+# OS needs portaudio, not present in codespaces, enclosing in try block prevents pytest error
+try:
+    import sounddevice as sd
+except OSError:
+    print("Make sure the OS supports PortAudio before running the program")
+    sd = None
 
 from morse import ALPHA_TO_MORSE, MORSE_TO_ALPHA
 
