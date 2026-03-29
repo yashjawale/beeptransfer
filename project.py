@@ -11,8 +11,6 @@ from morse import ALPHA_TO_MORSE, MORSE_TO_ALPHA
 # constants
 SAMPLE_RATE = 44100
 DOT_DURATION = 0.1
-FS = 44100
-UNIT = 0.1
 THRESHOLD = 0.03
 END_SIGNAL = "...---..."
 
@@ -138,7 +136,7 @@ def audio_callback(indata, frames, time, status):
 def listen():
     # Start listening
     with sd.InputStream(
-        callback=audio_callback, channels=1, samplerate=FS, blocksize=1024
+        callback=audio_callback, channels=1, samplerate=SAMPLE_RATE, blocksize=1024
     ) as stream:
         print("Listening...")
         while stream.active:
