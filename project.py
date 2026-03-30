@@ -33,7 +33,7 @@ def convert_text_to_morse(text):
     for char in text.lower():
         if char in ALPHA_TO_MORSE:
             converted.append(ALPHA_TO_MORSE[char])
-    
+
     return converted
 
 
@@ -104,8 +104,8 @@ def audio_callback(indata, frames, time, status):
         # word complete
         if 47 <= low <= 55:
             print(convert_morse_to_char(letter), end="", flush=True)
-            letter=""
-            
+            letter = ""
+
             # space after each word
             print(" ", end="", flush=True)
 
@@ -131,8 +131,8 @@ def audio_callback(indata, frames, time, status):
 
             low += 1
             high = 0
-    
-    if letter == "...---...":
+
+    if letter == END_SIGNAL:
         print("\n----------------")
         print("COMPLETE")
         raise sd.CallbackStop()
@@ -156,41 +156,39 @@ def filter_message(message):
 
 # entry point of program
 def main():
-    
+
     arg_length = len(sys.argv)
-    
+
     mode = ""
     message = ""
-    
+
     # if --listen supplied
     if arg_length == 2 and sys.argv[1] == "--listen":
         mode = "listen"
-    
+
     # if --send supplied
     if arg_length == 3 and sys.argv[1] == "--send":
         mode = "send"
         message = filter_message(sys.argv[2])
-    
+
     if arg_length > 1 and not (mode == "listen" or (mode == "send" and message)):
         print("Invalid arguments")
         sys.exit(1)
-    
-    
+
     # Prompt user to program modes if flag not provided
     if arg_length == 1:
         mode = Prompt.ask("Choose mode of program", choices=["send", "listen"], default="send")
-    
-    
+
     if mode == "send":
         text = message or Prompt.ask("Enter your message")
         print("Encoding message...")
         morse = convert_text_to_morse(text)
-        
+
         # append end signal
         morse.append(END_SIGNAL)
-        
+
         beep_morse(morse)
-    
+
     if mode == "listen":
         listen()
 
